@@ -1,0 +1,36 @@
+class TreeNode:
+    def __init__(self, value=0, left=None, right=None):
+        self.value = value
+        self.left = left
+        self.right = right
+
+def find_min_max(root):
+    # Helper function to recursively find min and max
+    def find_min_max_rec(node):
+        if node is None:
+            return (float('inf'), float('-inf'))
+        
+        left_min, left_max = find_min_max_rec(node.left)
+        right_min, right_max = find_min_max_rec(node.right)
+        
+        current_min = min(node.value, left_min, right_min)
+        current_max = max(node.value, left_max, right_max)
+        
+        return (current_min, current_max)
+    
+    return find_min_max_rec(root)
+
+# Example usage
+# Constructing a binary tree
+#      10
+#     /  \
+#    5    20
+#   / \   / \
+#  1   8 15  25
+root = TreeNode(10, 
+                TreeNode(5, TreeNode(1), TreeNode(8)),
+                TreeNode(20, TreeNode(15), TreeNode(25)))
+
+min_value, max_value = find_min_max(root)
+print(f"Minimum value: {min_value}")  # Output: Minimum value: 1
+print(f"Maximum value: {max_value}")  # Output: Maximum value: 25
